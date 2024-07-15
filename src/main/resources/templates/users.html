@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User Management</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-5">User Management</h1>
+    <form action="#" th:action="@{/users}" method="get" class="mt-3 mb-3">
+        <input type="text" name="email" placeholder="Search by Email" class="form-control" style="width: auto; display: inline-block; margin-left: 5px;" />
+        <button type="submit" class="btn btn-primary" style="margin-left: 5px;">Search</button>
+    </form>
+    <table class="table table-striped mt-3">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Banned</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.role}"></td>
+            <td th:text="${user.isBanned ? 'Yes' : 'No'}"></td>
+            <td>
+                <form th:action="@{/users/ban/{userId}(userId=${user.id})}" method="post" style="display:inline">
+                    <input type="hidden" name="_method" value="PUT" />
+                    <button type="submit" class="btn btn-sm btn-danger">Ban</button>
+                </form>
+                <form th:action="@{/users/unban/{userId}(userId=${user.id})}" method="post" style="display:inline">
+                    <input type="hidden" name="_method" value="PUT" />
+                    <button type="submit" class="btn btn-sm btn-success">Unban</button>
+                </form>
+                <form th:action="@{/users/role/{userId}(userId=${user.id})}" method="post" style="display:inline">
+                    <input type="hidden" name="_method" value="PUT" />
+                    <select name="role" class="form-control form-control-sm d-inline mt-1" style="width:auto; display:inline-block;">
+                        <option value="ROLE_USER" th:selected="${user.role.name() == 'ROLE_USER'}">ROLE_USER</option>
+                        <option value="ROLE_ADMIN" th:selected="${user.role.name() == 'ROLE_ADMIN'}">ROLE_ADMIN</option>
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-primary">Update Role</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -30,11 +30,7 @@ public class ProfileController {
         model.addAttribute("username", user.getUsername());
         Cart cart = cartService.findByUser(user);
         model.addAttribute("cart", cart);
-        if (user.getRoles().contains(Role.ROLE_ADMIN)) {
-            return "adminProfile";
-        } else {
-            return "userProfile";
-        }
+        return "userProfile";
     }
 }
 
