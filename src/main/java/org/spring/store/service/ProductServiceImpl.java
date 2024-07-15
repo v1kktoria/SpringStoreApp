@@ -3,6 +3,7 @@ package org.spring.store.service;
 import lombok.AllArgsConstructor;
 import org.spring.store.model.Product;
 import org.spring.store.repository.ProductRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAll() {
-        return productRepository.findAll();
+        return productRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     @Override
