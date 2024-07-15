@@ -31,7 +31,12 @@
                 </div>
                 <div th:if="${param.error}">
                     <div class="alert alert-danger" role="alert">
-                        Invalid email or password.
+                        <span th:if="${session.SPRING_SECURITY_LAST_EXCEPTION.message == 'User is banned'}">
+                            This account is banned.
+                        </span>
+                        <span th:if="${session.SPRING_SECURITY_LAST_EXCEPTION.message != 'User is banned'}">
+                            Invalid email or password.
+                        </span>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Sign In</button>
