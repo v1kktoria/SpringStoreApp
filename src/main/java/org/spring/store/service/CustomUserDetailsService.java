@@ -3,6 +3,7 @@ package org.spring.store.service;
 import lombok.AllArgsConstructor;
 import org.spring.store.model.User;
 import org.spring.store.repository.UserRepository;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,13 +22,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException("User not found with email: " + email)
         );
-        Set<SimpleGrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.name()))
-                .collect(Collectors.toSet());
+        if (user.isBanned()) {
+            throw new LockedException("User is banned");
+        }
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().name());
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                authorities
+                Set.of(authority)
         );
     }
 }
