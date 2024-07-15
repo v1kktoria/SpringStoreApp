@@ -21,14 +21,12 @@ public class User {
     private Long id;
     @Column(unique = true)
     private String email;
-    @Column(unique = true)
     private String username;
     @Column(nullable = false)
     private String password;
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles = new HashSet<>();
+    private Role role;
+    private boolean isBanned = false;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
 }
