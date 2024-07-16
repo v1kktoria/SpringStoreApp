@@ -28,8 +28,10 @@ public class ProductController {
     }
 
     @GetMapping("")
-    public String products(Model model){
-        List<Product> products = productService.findAll();
+    public String products(Model model, @RequestParam(required = false) String description){
+        List<Product> products;
+        if (description != null) products = productService.findByDescription(description);
+        else products = productService.findAll();
         model.addAttribute("products", products);
         return "products";
     }

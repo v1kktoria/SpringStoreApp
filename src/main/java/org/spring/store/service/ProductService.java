@@ -10,4 +10,5 @@ public interface ProductService {
     void delete (Product product);
     List<Product> findAll();
     Product findById(Long id) throws Exception;
+    List<Product> findByDescription(String description);
 }

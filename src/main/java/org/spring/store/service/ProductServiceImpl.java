@@ -38,4 +38,9 @@ public class ProductServiceImpl implements ProductService {
                 () -> new Exception("Not found product with id " + id)
         );
     }
+
+    @Override
+    public List<Product> findByDescription(String description) {
+        return productRepository.findByDescriptionContaining(description);
+    }
 }
